@@ -18,12 +18,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
+
+const props = defineProps({
+  id: String,
+});
 
 const textContent = ref("");
 
 const isEditing = ref(false);
-
 const inputField = ref(null);
 
 const disableEditMode = () => {

@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-row items-center relative">
-    <div class="grid" :style="gridStyle">
-      <BoardItem v-for="item in gridItemAmount" :key="item" />
+    <div class="grid" :style="store.gridStyle">
+      <BoardItem
+        v-for="item in store.gridItemAmount"
+        :key="item.id"
+        :id="item.id"
+      />
     </div>
 
     <!-- buttons -->
@@ -25,35 +29,28 @@
 <script setup>
 import { ref, computed } from "vue";
 
+import { useBoardStore } from "@/stores/boardStore";
 import BoardItem from "./BoardItem.vue";
 
-const gridSize = ref(4);
-
-const gridStyle = computed(() => {
-  return `grid-template-columns: repeat(${gridSize.value}, minmax(0, 1fr));`;
-});
-
-const gridItemAmount = computed(() => {
-  return gridSize.value ** 2;
-});
+const store = useBoardStore();
 
 const gridIncrease = () => {
-  if (gridSize.value < 6) {
-    gridSize.value++;
+  if (store.gridSize < 6) {
+    store.gridSize++;
   }
 };
 
 const gridDecrease = () => {
-  if (gridSize.value > 3) {
-    gridSize.value--;
+  if (store.gridSize > 3) {
+    store.gridSize--;
   }
 };
 
 const showGridIncrease = computed(() => {
-  return gridSize.value < 6 ? true : false;
+  return store.gridSize < 6 ? true : false;
 });
 
 const showGridDecrease = computed(() => {
-  return gridSize.value > 3 ? true : false;
+  return store.gridSize > 3 ? true : false;
 });
 </script>
