@@ -3,28 +3,42 @@
     @click="enableEditMode"
     class="bg-green-500 w-[120px] h-[120px] border-2 p-2 flex items-center justify-center"
   >
-    <input
+    <textarea
       v-if="isEditing"
-      @blur="disableEditMode"
-      v-model="textContent"
+      @blur="onBlur"
+      v-model="text"
       ref="inputField"
-      class="w-full h-full p-2"
+      class="w-full h-full p-2 bg-green-500 outline-none text-white"
       type="text"
-    />
+      maxlength="28"
+    ></textarea>
     <p v-else class="text-white text-xl text-center w-full">
-      {{ textContent }}
+      {{ text }}
     </p>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, computed, defineProps } from "vue";
+
+import { useBoardStore } from "@/stores/boardStore";
 
 const props = defineProps({
   id: String,
 });
 
-const textContent = ref("");
+const store = useBoardStore();
+
+// Find the item with the id and get its text
+const item = computed(() =>
+  store.boardItems.find((item) => item.id === props.id)
+);
+const text = ref(item.value.text);
+
+const onBlur = () => {
+  store.updateItemText(props.id, text.value);
+  disableEditMode();
+};
 
 const isEditing = ref(false);
 const inputField = ref(null);
@@ -44,5 +58,6 @@ const enableEditMode = () => {
 <style scoped>
 p {
   overflow-wrap: break-word;
+  line-height: 1.25;
 }
 </style>

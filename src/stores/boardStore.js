@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 export const useBoardStore = defineStore("boardStore", () => {
@@ -30,5 +30,12 @@ export const useBoardStore = defineStore("boardStore", () => {
     return boardItemsAll.value.slice(0, totalSize.value);
   });
 
-  return { gridSize, gridStyle, boardItems };
+  const updateItemText = (id, newText) => {
+    const item = boardItemsAll.value.find((item) => item.id === id);
+    if (item) {
+      item.text = newText;
+    }
+  };
+
+  return { gridSize, gridStyle, boardItems, updateItemText, boardItemsAll };
 });
