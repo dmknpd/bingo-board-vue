@@ -2,7 +2,7 @@
   <div class="flex flex-row items-center relative">
     <div class="grid" :style="store.gridStyle">
       <BoardItem
-        v-for="item in store.gridItemAmount"
+        v-for="item in store.boardItems"
         :key="item.id"
         :id="item.id"
       />
