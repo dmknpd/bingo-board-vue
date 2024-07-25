@@ -8,7 +8,7 @@
       @blur="onBlur"
       v-model="text"
       ref="inputField"
-      class="w-full h-full p-2 bg-green-500 outline-none text-white"
+      class="w-full h-full p-2 bg-green-500 outline-white text-white resize-none"
       type="text"
       maxlength="28"
     ></textarea>

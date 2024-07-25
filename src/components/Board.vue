@@ -1,33 +1,60 @@
 <template>
-  <div class="flex flex-row items-center relative">
-    <div class="grid" :style="store.gridStyle">
-      <BoardItem
-        v-for="item in store.boardItems"
-        :key="item.id"
-        :id="item.id"
-      />
+  <div class="flex flex-col items-center gap-10">
+    <div class="flex flex-row items-center gap-20">
+      <button
+        @click="gridDecrease"
+        :class="{ 'opacity-0': !showGridDecrease }"
+        class="text-white text-5xl border-2 w-[50px] h-[50px] hover:text-green-500 hover:border-green-500"
+      >
+        -
+      </button>
+
+      <!-- board -->
+      <div class="grid" :style="store.gridStyle">
+        <BoardItem
+          v-for="item in store.boardItems"
+          :key="item.id"
+          :id="item.id"
+        />
+      </div>
+
+      <button
+        @click="gridIncrease"
+        :class="{ 'opacity-0': !showGridIncrease }"
+        class="text-white text-5xl border-2 w-[50px] h-[50px] hover:text-green-500 hover:border-green-500"
+      >
+        +
+      </button>
     </div>
 
-    <!-- buttons -->
-    <button
-      @click="gridDecrease"
-      v-show="showGridDecrease"
-      class="text-white text-5xl border-2 w-[50px] h-[50px] absolute left-[-100px]"
-    >
-      -
-    </button>
-    <button
-      @click="gridIncrease"
-      v-show="showGridIncrease"
-      class="text-white text-5xl border-2 w-[50px] h-[50px] absolute right-[-100px]"
-    >
-      +
-    </button>
+    <div class="flex gap-5 items-center">
+      <button
+        @click="store.clearBoardItems"
+        class="text-white text-2xl py-1 px-2 border-2 hover:text-green-500 hover:border-green-500"
+      >
+        ⟳
+      </button>
+      <div class="flex items-center gap-2">
+        <label for="random" class="text-white text-xl">Shuffle?</label>
+        <input
+          type="checkbox"
+          name="random"
+          id="random"
+          class="h-5 w-5 accent-white"
+        />
+      </div>
+      <button
+        @click="store.clearBoardItems"
+        class="text-white text-2xl py-1 px-2 border-2 hover:text-green-500 hover:border-green-500"
+      >
+        Create
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 
 import { useBoardStore } from "@/stores/boardStore";
 import BoardItem from "./BoardItem.vue";

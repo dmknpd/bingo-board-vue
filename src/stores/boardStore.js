@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 export const useBoardStore = defineStore("boardStore", () => {
@@ -18,7 +18,7 @@ export const useBoardStore = defineStore("boardStore", () => {
 
   const initializeBoardItems = () => {
     for (let i = 1; i <= 36; i++) {
-      boardItemsAll.value.push({ id: uuidv4(), text: "" });
+      boardItemsAll.value.push({ id: uuidv4(), text: i });
     }
   };
 
@@ -37,5 +37,16 @@ export const useBoardStore = defineStore("boardStore", () => {
     }
   };
 
-  return { gridSize, gridStyle, boardItems, updateItemText, boardItemsAll };
+  const clearBoardItems = () => {
+    boardItemsAll.value = boardItemsAll.value.map((i) => (i.text = ""));
+  };
+
+  return {
+    gridSize,
+    gridStyle,
+    boardItems,
+    updateItemText,
+    boardItemsAll,
+    clearBoardItems,
+  };
 });
