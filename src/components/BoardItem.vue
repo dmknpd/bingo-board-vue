@@ -2,6 +2,7 @@
   <div
     @click="enableEditMode"
     class="bg-green-500 w-[120px] h-[120px] border-2 p-2 flex items-center justify-center"
+    :class="{ completed: isCompleted }"
   >
     <textarea
       v-if="isEditing"
@@ -19,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from "vue";
+import { ref, computed, defineProps, watch } from "vue";
 
 import { useBoardStore } from "@/stores/boardStore";
 
@@ -41,6 +42,8 @@ const onBlur = () => {
 };
 
 const isEditing = ref(false);
+const isCompleted = ref(false);
+
 const inputField = ref(null);
 
 const disableEditMode = () => {
@@ -48,16 +51,34 @@ const disableEditMode = () => {
 };
 
 const enableEditMode = () => {
-  isEditing.value = true;
-  setTimeout(() => {
-    inputField.value.focus();
-  }, 0);
+  if (!store.isPlayMode) {
+    isEditing.value = true;
+    setTimeout(() => {
+      inputField.value.focus();
+    }, 0);
+  } else {
+    isCompleted.value = !isCompleted.value;
+  }
 };
+
+watch(
+  () => store.isPlayMode,
+  () => {
+    isCompleted.value = false;
+  }
+);
 </script>
 
 <style scoped>
 p {
   overflow-wrap: break-word;
   line-height: 1.25;
+}
+
+.completed::after {
+  content: "X";
+  position: absolute;
+  font-size: 120px;
+  color: rgb(220 38 38);
 }
 </style>

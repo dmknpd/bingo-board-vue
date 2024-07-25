@@ -1,11 +1,18 @@
 <template>
   <main class="flex flex-row m-auto p-10">
     <Board />
-    <GenerateBoard />
   </main>
 </template>
 
 <script setup>
 import Board from "@/components/Board.vue";
-import GenerateBoard from "@/components/GenerateBoard.vue";
+
+import { useBoardStore } from "@/stores/boardStore";
+import { onMounted } from "vue";
+
+const store = useBoardStore();
+
+onMounted(() => {
+  store.disablePlayMode();
+});
 </script>

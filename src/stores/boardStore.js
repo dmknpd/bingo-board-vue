@@ -17,14 +17,15 @@ export const useBoardStore = defineStore("boardStore", () => {
   const boardItemsAll = ref([]);
 
   const initializeBoardItems = () => {
+    boardItemsAll.value = [];
     for (let i = 1; i <= 36; i++) {
-      boardItemsAll.value.push({ id: uuidv4(), text: i });
+      boardItemsAll.value.push({ id: uuidv4(), text: "" });
     }
   };
 
   initializeBoardItems();
 
-  //displayed items
+  //items for edit
 
   const boardItems = computed(() => {
     return boardItemsAll.value.slice(0, totalSize.value);
@@ -37,8 +38,47 @@ export const useBoardStore = defineStore("boardStore", () => {
     }
   };
 
-  const clearBoardItems = () => {
-    boardItemsAll.value = boardItemsAll.value.map((i) => (i.text = ""));
+  // const clearBoardItems = () => {
+  //   boardItemsAll.value = boardItemsAll.value.map((item) => {
+  //     return { ...item, text: "" };
+  //   });
+  // };
+
+  //shuffle
+  const needShuffle = ref(false);
+
+  const shuffleItems = (array) => {
+    let arrayCopy = array.slice();
+
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+    }
+
+    return arrayCopy;
+  };
+
+  //items for game
+
+  const boardItemsForGame = ref([]);
+
+  const startGame = () => {
+    return needShuffle.value
+      ? (boardItemsForGame.value = shuffleItems(boardItems.value))
+      : (boardItemsForGame.value = [...boardItems.value]);
+  };
+
+  //Play mode
+
+  const isPlayMode = ref(false);
+
+  const enablePlayMode = () => {
+    isPlayMode.value = true;
+  };
+
+  const disablePlayMode = () => {
+    isPlayMode.value = false;
   };
 
   return {
@@ -47,6 +87,12 @@ export const useBoardStore = defineStore("boardStore", () => {
     boardItems,
     updateItemText,
     boardItemsAll,
-    clearBoardItems,
+    initializeBoardItems,
+    needShuffle,
+    boardItemsForGame,
+    startGame,
+    isPlayMode,
+    enablePlayMode,
+    disablePlayMode,
   };
 });

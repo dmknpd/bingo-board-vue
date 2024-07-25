@@ -29,7 +29,7 @@
 
     <div class="flex gap-5 items-center">
       <button
-        @click="store.clearBoardItems"
+        @click="store.initializeBoardItems"
         class="text-white text-2xl py-1 px-2 border-2 hover:text-green-500 hover:border-green-500"
       >
         ⟳
@@ -41,10 +41,11 @@
           name="random"
           id="random"
           class="h-5 w-5 accent-white"
+          v-model="store.needShuffle"
         />
       </div>
       <button
-        @click="store.clearBoardItems"
+        @click="startGame"
         class="text-white text-2xl py-1 px-2 border-2 hover:text-green-500 hover:border-green-500"
       >
         Create
@@ -55,11 +56,13 @@
 
 <script setup>
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 import { useBoardStore } from "@/stores/boardStore";
 import BoardItem from "./BoardItem.vue";
 
 const store = useBoardStore();
+const router = useRouter();
 
 const gridIncrease = () => {
   if (store.gridSize < 6) {
@@ -74,10 +77,15 @@ const gridDecrease = () => {
 };
 
 const showGridIncrease = computed(() => {
-  return store.gridSize < 6 ? true : false;
+  return store.gridSize < 6 && !store.isPlayMode ? true : false;
 });
 
 const showGridDecrease = computed(() => {
-  return store.gridSize > 3 ? true : false;
+  return store.gridSize > 3 && !store.isPlayMode ? true : false;
 });
+
+const startGame = () => {
+  store.startGame();
+  router.push({ name: "bingo" });
+};
 </script>
