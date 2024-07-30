@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 export const useBoardStore = defineStore("boardStore", () => {
@@ -16,8 +16,11 @@ export const useBoardStore = defineStore("boardStore", () => {
 
   const boardItemsAll = ref([]);
 
+  const boardItemsForGame = ref([]);
+
   const initializeBoardItems = () => {
     boardItemsAll.value = [];
+    boardItemsForGame.value = [];
     for (let i = 1; i <= 36; i++) {
       boardItemsAll.value.push({ id: uuidv4(), text: "" });
     }
@@ -38,12 +41,6 @@ export const useBoardStore = defineStore("boardStore", () => {
     }
   };
 
-  // const clearBoardItems = () => {
-  //   boardItemsAll.value = boardItemsAll.value.map((item) => {
-  //     return { ...item, text: "" };
-  //   });
-  // };
-
   //shuffle
   const needShuffle = ref(false);
 
@@ -59,9 +56,7 @@ export const useBoardStore = defineStore("boardStore", () => {
     return arrayCopy;
   };
 
-  //items for game
-
-  const boardItemsForGame = ref([]);
+  //init items for game
 
   const startGame = () => {
     return needShuffle.value

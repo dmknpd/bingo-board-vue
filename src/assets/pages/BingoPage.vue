@@ -1,6 +1,10 @@
 <template>
   <main class="flex flex-row m-auto p-10">
-    <div v-if="store.boardItemsForGame" class="grid" :style="store.gridStyle">
+    <div
+      v-if="store.boardItemsForGame.length"
+      class="grid"
+      :style="store.gridStyle"
+    >
       <BoardItem
         v-for="item in store.boardItemsForGame"
         :key="item.id"
